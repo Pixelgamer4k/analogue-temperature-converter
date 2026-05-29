@@ -80,9 +80,9 @@ fun AnalogueComputerCanvas(
                         // Dial F center is at (240, 0)
                         val distF = sqrt((lx - 240f) * (lx - 240f) + ly * ly)
 
-                        if (distC < 200f) {
+                        if (distC < 230f) {
                             onDragStartC()
-                        } else if (distF < 200f) {
+                        } else if (distF < 230f) {
                             onDragStartF()
                         }
                     },
@@ -131,8 +131,8 @@ fun AnalogueComputerCanvas(
         val scale = minOf(w / logicalWidth, h / logicalHeight)
         
         // Gyro offsets (clamped for safety)
-        val tX = state.tiltX.coerceIn(-1.5f, 1.5f)
-        val tY = state.tiltY.coerceIn(-1.5f, 1.5f)
+        val tX = state.tiltX.coerceIn(-2.8f, 2.8f)
+        val tY = state.tiltY.coerceIn(-2.8f, 2.8f)
 
         // Draw everything centered and scaled
         withTransform({
@@ -141,14 +141,14 @@ fun AnalogueComputerCanvas(
         }) {
             // LAYER 1: Deep Background Plate (Parallax -10dp)
             withTransform({
-                translate(left = -tX * 12f, top = -tY * 12f)
+                translate(left = -tX * 25f, top = -tY * 25f)
             }) {
                 drawBackgroundPlate(logicalWidth, logicalHeight)
             }
 
             // LAYER 2: Gear Shaft Hubs & Bridges (Parallax -5dp)
             withTransform({
-                translate(left = -tX * 6f, top = -tY * 6f)
+                translate(left = -tX * 15f, top = -tY * 15f)
             }) {
                 drawBridgesAndMounts(state.gears)
             }
@@ -160,13 +160,13 @@ fun AnalogueComputerCanvas(
 
             // LAYER 4: Dial Scales, Bezels & Needles (Parallax +8dp)
             withTransform({
-                translate(left = tX * 8f, top = tY * 8f)
+                translate(left = tX * 20f, top = tY * 20f)
             }) {
                 // Celsius Dial Bezel, Rotating Face, & Index Marks
                 drawDialScale(
-                    centerX = -240f,
+                    centerX = -280f,
                     centerY = 0f,
-                    radius = 150f,
+                    radius = 180f,
                     accentColor = Color(0xFF00B0FF),
                     isCelsius = true,
                     angle = state.celsiusDialAngle
@@ -174,9 +174,9 @@ fun AnalogueComputerCanvas(
 
                 // Fahrenheit Dial Bezel, Rotating Face, & Index Marks
                 drawDialScale(
-                    centerX = 240f,
+                    centerX = 280f,
                     centerY = 0f,
-                    radius = 150f,
+                    radius = 180f,
                     accentColor = Color(0xFFFF6D00),
                     isCelsius = false,
                     angle = state.fahrenheitDialAngle
@@ -754,14 +754,14 @@ private fun DrawScope.drawGlassAndOilSheen(w: Float, h: Float, tX: Float, tY: Fl
     // Draw the thin-film interference on top of both dials
     drawCircle(
         brush = filmBrush,
-        radius = 150f,
+        radius = 180f,
         center = Offset(-240f, 0f),
         blendMode = BlendMode.Color
     )
 
     drawCircle(
         brush = filmBrush,
-        radius = 150f,
+        radius = 180f,
         center = Offset(240f, 0f),
         blendMode = BlendMode.Color
     )
